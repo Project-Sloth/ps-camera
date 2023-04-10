@@ -1,57 +1,62 @@
-var camera = false;
+var displayPicture = false;
 
 function setLocation(location) {
-    $(".street-time > p:first-child").text("Location: " + location);
+	if (location) {
+		$('#location').text(location);
+	} else {
+		$('#location').text('Unknown');
+	}
 }
 
 function open(image) {
-    if (!camera) {
-        $('.container').fadeIn('slow');
-        $('.camera').fadeIn('slow');
-        $('.street-time').fadeIn('slow');
-        $('<img  src='+image+' style = "width:100%; height: 100%;">').appendTo('.camera')
-        camera = true
-    }
+	if (!displayPicture) {
+		$('.picture-container').fadeIn('slow');
+		$('.picture').css({
+			background: `url(${image})`,
+		});
+
+		displayPicture = true;
+	}
 }
 
 function close() {
-    if (camera) {
-        $('.container').fadeOut('fast');
-        $('.camera').fadeOut('fast');
-        $('.camera').html("");
-        $('.street-time').fadeOut('fast');
-        camera = false
-        $.post(`https://${GetParentResourceName()}/close`)
-    }
+	if (displayPicture) {
+		$('.picture-container').fadeOut('fast');
+		$('#location').html('');
+		$('.picture').css({ background: '' });
+		displayPicture = false;
+		$.post(`https://${GetParentResourceName()}/close`);
+	}
 }
 
-$(document).ready(function() {
+$(document).ready(function () {
+	window.addEventListener('message', function (event) {
+		switch (event.data.action) {
+			case 'Open':
+				open(event.data.image);
+				break;
+			case 'SetLocation':
+				setLocation(event.data.location);
+				break;
+			case 'showOverlay':
+				document
+					.getElementById('camera-overlay')
+					.classList.remove('hide');
+				break;
+			case 'hideOverlay':
+				document.getElementById('camera-overlay').classList.add('hide');
+				break;
+		}
+	});
 
-    window.addEventListener("message", function (event) {
-    switch (event.data.action) {
-        case "Open":
-            open(event.data.image);
-            break;
-        case "SetLocation":
-            setLocation(event.data.location);
-            break;
-        case "showOverlay":
-            document.getElementById("camera-overlay").classList.remove("hide");
-            break;
-        case "hideOverlay":
-            document.getElementById("camera-overlay").classList.add("hide");
-            break;
-        }
-    });
-
-    document.onkeydown = function (event) {
-        if (event.repeat) {
-          return;
-        }
-        switch (event.key) {
-          case "Escape":
-            close();
-            break;
-        }
-    };
-})
+	document.onkeydown = function (event) {
+		if (event.repeat) {
+			return;
+		}
+		switch (event.key) {
+			case 'Escape':
+				close();
+				break;
+		}
+	};
+});
