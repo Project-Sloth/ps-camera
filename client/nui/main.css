@@ -13,8 +13,8 @@ body {
 
 .picture-container {
 	position: relative;
-	width: 50%;
-	height: 60%;
+	width: 500px;
+	height: 600px;
 	padding: 25px;
 	border: 1px solid #999999;
 	border-radius: 2px;
