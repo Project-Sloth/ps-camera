@@ -210,7 +210,7 @@ RegisterNetEvent("ps-camera:usePhoto", function(url)
 
     if photo then
         SetNuiFocus(true, true)
-        SendNUIMessage({action = "Open", image = url})
+        SendNUIMessage({action = "openPhoto", image = url})
 
         local ped = PlayerPedId()
         SharedRequestAnimDict("amb@world_human_tourist_map@male@base", function()

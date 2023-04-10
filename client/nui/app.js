@@ -10,20 +10,20 @@ function setLocation(location) {
 
 function open(image) {
 	if (!displayPicture) {
-		$('.picture-container').fadeIn('slow');
-		if (image) {
-			$('.picture').css({
-				'background-image': `url(${image})`,
-			});
-		} else {
-			$('.picture').css({
-				'background-image': `url(https://slang.net/img/slang/lg/kekl_6395.png)`,
-			});
-		}
-
-		displayPicture = true;
+	  $('.picture-container').removeClass('hide'); // Remove the hide class
+	  if (image) {
+		$('.picture').css({
+		  'background-image': `url(${image})`,
+		});
+	  } else {
+		$('.picture').css({
+		  'background-image': `url(https://slang.net/img/slang/lg/kekl_6395.png)`,
+		});
+	  }
+  
+	  displayPicture = true;
 	}
-}
+  }
 
 function close() {
 	if (displayPicture) {
@@ -40,17 +40,19 @@ $(document).ready(function () {
 		switch (event.data.action) {
 			case 'Open':
 				open(event.data.image);
+				document.getElementById('camera-overlay').classList.remove('hide');
 				break;
 			case 'SetLocation':
 				setLocation(event.data.location);
 				break;
 			case 'showOverlay':
-				document
-					.getElementById('camera-overlay')
-					.classList.remove('hide');
+				document.getElementById('camera-overlay').classList.remove('hide');
 				break;
 			case 'hideOverlay':
 				document.getElementById('camera-overlay').classList.add('hide');
+				break;
+			case 'openPhoto':
+				open(event.data.image);
 				break;
 		}
 	});

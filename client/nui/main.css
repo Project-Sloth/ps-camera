@@ -42,6 +42,10 @@ body {
 }
 
 .camera-overlay {
+	position: fixed;
+	top: 0;
+	left: 0;
+	z-index: 1000;
 	width: 100vw;
 	height: 100vh;
 	display: grid;
@@ -49,7 +53,7 @@ body {
 	padding: 10vh;
 	color: white;
 	font-family: 'Plus Jakarta Sans', sans-serif;
-}
+  }
 
 .frame {
 	position: relative;
