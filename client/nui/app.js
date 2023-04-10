@@ -11,9 +11,15 @@ function setLocation(location) {
 function open(image) {
 	if (!displayPicture) {
 		$('.picture-container').fadeIn('slow');
-		$('.picture').css({
-			background: `url(${image})`,
-		});
+		if (image) {
+			$('.picture').css({
+				background: `url(${image})`,
+			});
+		} else {
+			$('.picture').css({
+				background: `url(https://slang.net/img/slang/lg/kekl_6395.png)`,
+			});
+		}
 
 		displayPicture = true;
 	}
