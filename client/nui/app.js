@@ -66,5 +66,3 @@ $(document).ready(function () {
 		}
 	};
 });
-
-open();
