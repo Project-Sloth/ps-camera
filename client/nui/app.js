@@ -13,11 +13,11 @@ function open(image) {
 		$('.picture-container').fadeIn('slow');
 		if (image) {
 			$('.picture').css({
-				background: `url(${image})`,
+				'background-image': `url(${image})`,
 			});
 		} else {
 			$('.picture').css({
-				background: `url(https://slang.net/img/slang/lg/kekl_6395.png)`,
+				'background-image': `url(https://slang.net/img/slang/lg/kekl_6395.png)`,
 			});
 		}
 
@@ -66,3 +66,5 @@ $(document).ready(function () {
 		}
 	};
 });
+
+open();
