@@ -9,3 +9,10 @@ The ps-camera script allows you to capture images throughout the city, serving a
 	['photo'] 				 		 = {['name'] = 'photo', 			  	  		['label'] = 'Saved Pic', 				['weight'] = 500, 		['type'] = 'item', 		['image'] = 'photo.png', 				['unique'] = true, 	['useable'] = true, 	['shouldClose'] = true,   ['combinable'] = nil,   ['description'] = 'Brand new picture saved!'},
 ```
 * Add pictures for items to your html inventory folder. 
+
+# Preview
+* Camera Overlay
+![image](https://user-images.githubusercontent.com/82112471/231553020-f5061241-e04a-462e-8266-a48b8efc9884.png)
+
+* Picture Overlay
+* ![image](https://user-images.githubusercontent.com/82112471/231553182-fd15c5f7-b908-42f7-a8d6-93185fd6e3c2.png)
