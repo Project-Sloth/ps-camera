@@ -10,7 +10,7 @@ function setLocation(location) {
 
 function open(image) {
 	if (!displayPicture) {
-	  $('.picture-container').removeClass('hide'); // Remove the hide class
+	  $('.picture-container').removeClass('hide');
 	  if (image) {
 		$('.picture').css({
 		  'background-image': `url(${image})`,
@@ -25,14 +25,14 @@ function open(image) {
 	}
   }
 
-function close() {
-	if (displayPicture) {
-		$('.picture-container').fadeOut('fast');
-		$('#location').html('');
-		$('.picture').css({ background: '' });
-		displayPicture = false;
-		$.post(`https://${GetParentResourceName()}/close`);
-	}
+  function close() {
+    if (displayPicture) {
+        $('.picture-container').addClass('hide');
+        $('#location').html('');
+        $('.picture').css({ background: '' });
+        displayPicture = false;
+        $.post(`https://${GetParentResourceName()}/close`);
+    }
 }
 
 $(document).ready(function () {
