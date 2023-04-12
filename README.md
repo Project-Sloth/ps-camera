@@ -15,4 +15,4 @@ The ps-camera script allows you to capture images throughout the city, serving a
 ![image](https://user-images.githubusercontent.com/82112471/231553020-f5061241-e04a-462e-8266-a48b8efc9884.png)
 
 * Picture Overlay
-* ![image](https://user-images.githubusercontent.com/82112471/231553182-fd15c5f7-b908-42f7-a8d6-93185fd6e3c2.png)
+![image](https://user-images.githubusercontent.com/82112471/231553182-fd15c5f7-b908-42f7-a8d6-93185fd6e3c2.png)
