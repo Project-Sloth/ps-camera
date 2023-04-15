@@ -201,6 +201,7 @@ function CameraLoop()
         DestroyCam(cam, false)
         SetNightvision(false)
         SetSeethrough(false)
+        SendNUIMessage({action = "hideOverlay"})
     end)
 end
 
