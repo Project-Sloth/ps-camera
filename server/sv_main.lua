@@ -37,3 +37,15 @@ QBCore.Functions.CreateUseableItem("photo", function(source, item)
         TriggerClientEvent("ps-camera:usePhoto", source, item.info.image)
     end
 end)
+
+function UseCam(source)
+    local src = source
+    local Player = QBCore.Functions.GetPlayer(src)
+    if Player.Functions.GetItemByName('camera') then
+        TriggerClientEvent("ps-camera:useCamera", src)
+    else
+        TriggerClientEvent('QBCore:Notify', src, "U don\'t have a camera", "error")
+    end
+end
+
+exports("UseCam", UseCam)
