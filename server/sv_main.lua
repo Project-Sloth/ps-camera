@@ -39,7 +39,6 @@ QBCore.Functions.CreateUseableItem("photo", function(source, item)
 end)
 
 function UseCam(source)
-    print('exports yeahh')
     local src = source
     local Player = QBCore.Functions.GetPlayer(src)
     if Player.Functions.GetItemByName('camera') then
