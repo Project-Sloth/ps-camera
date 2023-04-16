@@ -10,29 +10,29 @@ function setLocation(location) {
 
 function open(image) {
 	if (!displayPicture) {
-	  $('.picture-container').removeClass('hide');
-	  if (image) {
-		$('.picture').css({
-		  'background-image': `url(${image})`,
-		});
-	  } else {
-		$('.picture').css({
-		  'background-image': `url(https://slang.net/img/slang/lg/kekl_6395.png)`,
-		});
-	  }
-  
-	  displayPicture = true;
-	}
-  }
+		$('.picture-container').removeClass('hide');
+		if (image) {
+			$('.picture').css({
+				'background-image': `url(${image})`,
+			});
+		} else {
+			$('.picture').css({
+				'background-image': `url(https://slang.net/img/slang/lg/kekl_6395.png)`,
+			});
+		}
 
-  function close() {
-    if (displayPicture) {
-        $('.picture-container').addClass('hide');
-        $('#location').html('');
-        $('.picture').css({ background: '' });
-        displayPicture = false;
-        $.post(`https://${GetParentResourceName()}/close`);
-    }
+		displayPicture = true;
+	}
+}
+
+function close() {
+	if (displayPicture) {
+		$('.picture-container').addClass('hide');
+		$('#location').html('');
+		$('.picture').css({ background: '' });
+		displayPicture = false;
+		$.post(`https://${GetParentResourceName()}/close`);
+	}
 }
 
 $(document).ready(function () {
@@ -40,13 +40,17 @@ $(document).ready(function () {
 		switch (event.data.action) {
 			case 'Open':
 				open(event.data.image);
-				document.getElementById('camera-overlay').classList.remove('hide');
+				document
+					.getElementById('camera-overlay')
+					.classList.remove('hide');
 				break;
 			case 'SetLocation':
 				setLocation(event.data.location);
 				break;
 			case 'showOverlay':
-				document.getElementById('camera-overlay').classList.remove('hide');
+				document
+					.getElementById('camera-overlay')
+					.classList.remove('hide');
 				break;
 			case 'hideOverlay':
 				document.getElementById('camera-overlay').classList.add('hide');

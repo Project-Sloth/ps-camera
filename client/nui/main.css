@@ -14,7 +14,6 @@ body {
 .picture-container {
 	position: relative;
 	width: 1000px;
-	height: 700px;
 	padding: 25px;
 	border: 1px solid #999999;
 	border-radius: 2px;
@@ -26,12 +25,12 @@ body {
 .picture {
 	background-repeat: no-repeat;
 	background-size: contain;
-	width: 100%;
-	height: 90%;
+	background-position: center center;
+	aspect-ratio: 16 / 9;
 }
 
 .info {
-	margin-top: 1em;
+	margin-top: 2em;
 	text-align: center;
 	user-select: none;
 	font-family: 'Encode Sans SC', sans-serif;
@@ -53,7 +52,7 @@ body {
 	padding: 10vh;
 	color: white;
 	font-family: 'Plus Jakarta Sans', sans-serif;
-  }
+}
 
 .frame {
 	position: relative;
