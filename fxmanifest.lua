@@ -6,7 +6,7 @@ author 'Project Sloth Team'
 
 description 'Camera script'
 
-version '1.0.1'
+version '1.0.2'
 
 lua54 'yes'
 
