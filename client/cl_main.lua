@@ -59,7 +59,10 @@ local function CheckInputRotation(cam, zoomvalue)
         local new_z = rotation.z + rightAxisX*-1.0*(speed_ud)*(zoomvalue+0.1)
         local new_x = math.max(math.min(20.0, rotation.x + rightAxisY*-1.0*(speed_lr)*(zoomvalue+0.1)), -89.5)
         SetCamRot(cam, new_x, 0.0, new_z, 2)
-        SetEntityHeading(PlayerPedId(),new_z)
+        -- Moves the entities body if they are not in a vehicle (else the whole vehicle will rotate as they look around :P)
+        if not IsPedSittingInAnyVehicle(PlayerPedId()) then
+            SetEntityHeading(PlayerPedId(), new_z)
+        end
     end
 end
 
