@@ -1,8 +1,7 @@
 local QBCore = exports['qb-core']:GetCoreObject()
-local json = require("json")
 
 -- Add Discord webhook here.
-local webhook = "https://discord.com/api/webhooks/1092328311235018752/Wk77hKe1KXH7Ltg3DF5uC1jDOKg_3F-NolpClxHyqgS_qgHd5z5fCX-xn7qsX4THjKcM"
+local webhook = ""
 
 RegisterNetEvent("ps-camera:cheatDetect", function()
     DropPlayer(source, "Cheater Detected")
@@ -19,11 +18,16 @@ RegisterNetEvent("ps-camera:CreatePhoto", function(url)
     if not player then return end
 
     local coords = GetEntityCoords(GetPlayerPed(source))
-    local location = {
-        x = coords.x,
-        y = coords.y,
-        z = coords.z
-    }
+
+    TriggerClientEvent("ps-camera:getStreetName", source, url, coords)
+end)
+
+RegisterNetEvent("ps-camera:savePhoto", function(url, streetName)
+    local source = source
+    local player = QBCore.Functions.GetPlayer(source)
+    if not player then return end
+
+    local location = streetName
 
     local info = {
         image = url,
