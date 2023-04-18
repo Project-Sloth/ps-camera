@@ -209,7 +209,7 @@ function CameraLoop()
 end
 
 
-RegisterNetEvent("ps-camera:usePhoto", function(url)
+RegisterNetEvent("ps-camera:usePhoto", function(url, location)
     photo = not photo
 
     if photo then
@@ -222,7 +222,7 @@ RegisterNetEvent("ps-camera:usePhoto", function(url)
         end)
 
         local coords = GetEntityCoords(ped)
-        SetLocation(coords)
+        SetLocation(location.x, location.y, location.z)
         
         if not HasModelLoaded("prop_cs_planning_photo") then
             LoadPropDict("prop_cs_planning_photo")
