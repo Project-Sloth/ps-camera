@@ -208,13 +208,20 @@ function CameraLoop()
     end)
 end
 
+RegisterNetEvent("ps-camera:getStreetName", function(url, coords)
+    local streetHash, crossingHash = GetStreetNameAtCoord(coords.x, coords.y, coords.z)
+    local streetName = GetStreetNameFromHashKey(streetHash)
+
+    TriggerServerEvent("ps-camera:savePhoto", url, streetName)
+end)
+
 
 RegisterNetEvent("ps-camera:usePhoto", function(url, location)
     photo = not photo
 
     if photo then
-        SetNuiFocus(true, true)
-        SendNUIMessage({action = "openPhoto", image = url})
+        SetNuiFocus(true, true);
+        SendNUIMessage({action = "openPhoto", image = url, location = location})
 
         local ped = PlayerPedId()
         SharedRequestAnimDict("amb@world_human_tourist_map@male@base", function()
@@ -222,7 +229,6 @@ RegisterNetEvent("ps-camera:usePhoto", function(url, location)
         end)
 
         local coords = GetEntityCoords(ped)
-        SetLocation(location.x, location.y, location.z)
         
         if not HasModelLoaded("prop_cs_planning_photo") then
             LoadPropDict("prop_cs_planning_photo")
@@ -233,6 +239,7 @@ RegisterNetEvent("ps-camera:usePhoto", function(url, location)
         SetModelAsNoLongerNeeded("prop_cs_planning_photo")
     end
 end)
+
 
 RegisterNUICallback("close", function()
     SetNuiFocus(false, false)
