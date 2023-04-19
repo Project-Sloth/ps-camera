@@ -1,4 +1,4 @@
-local QBCore = exports['qb-core']:GetCoreObject()
+local ESX = exports['es_extended']:getSharedObject()
 
 -- Add Discord webhook here.
 local webhook = ""
@@ -14,8 +14,8 @@ end)
 
 RegisterNetEvent("ps-camera:CreatePhoto", function(url)
     local source = source
-    local player = QBCore.Functions.GetPlayer(source)
-    if not player then return end
+    local xPlayer = ESX.GetPlayerFromId(source)
+    if not xPlayer then return end
 
     local coords = GetEntityCoords(GetPlayerPed(source))
 
@@ -24,42 +24,46 @@ end)
 
 RegisterNetEvent("ps-camera:savePhoto", function(url, streetName)
     local source = source
-    local player = QBCore.Functions.GetPlayer(source)
-    if not player then return end
+    local xPlayer = ESX.GetPlayerFromId(source)
+    if not xPlayer then return end
 
     local location = streetName
 
-    local info = {
+    local metadata = {
         image = url,
         location = location
     }
-    player.Functions.AddItem("photo", 1, nil, info)
+    xPlayer.addInventoryItem("photo", 1, metadata)
 end)
 
 
-QBCore.Functions.CreateUseableItem("camera", function(source, item)
+ESX.RegisterUsableItem("camera", function(source, name, item)
     local source = source
-    local Player = QBCore.Functions.GetPlayer(source)
-    if Player.Functions.GetItemByName(item.name) then
+    local xPlayer = ESX.GetPlayerFromId(source)
+    local _item = xPlayer.getInventoryItem(name)
+
+    if _item.count > 0 then
         TriggerClientEvent("ps-camera:useCamera", source)
     end
 end)
 
-QBCore.Functions.CreateUseableItem("photo", function(source, item)
+ESX.RegisterUsableItem("photo", function(source, name, item)
     local source = source
-    local Player = QBCore.Functions.GetPlayer(source)
-    if Player.Functions.GetItemByName(item.name) then
-        TriggerClientEvent("ps-camera:usePhoto", source, item.info.image, item.info.location)
+    local xPlayer = ESX.GetPlayerFromId(source)
+    local _item = xPlayer.getInventoryItem(name)
+
+    if _item.count > 0 then
+        TriggerClientEvent("ps-camera:usePhoto", source, item.metadata.image, item.metadata.location)
     end
 end)
 
 function UseCam(source)
-    local src = source
-    local Player = QBCore.Functions.GetPlayer(src)
-    if Player.Functions.GetItemByName('camera') then
+    local source = source
+    local xPlayer = ESX.GetPlayerFromId(source)
+    if xPlayer.Functions.GetItemByName('camera') then
         TriggerClientEvent("ps-camera:useCamera", src)
     else
-        TriggerClientEvent('QBCore:Notify', src, "U don\'t have a camera", "error")
+        TriggerClientEvent('esx:showNotification', src, "U don\'t have a camera", "error")
     end
 end
 
