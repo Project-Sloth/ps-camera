@@ -7,7 +7,8 @@ RegisterNetEvent("ps-camera:cheatDetect", function()
     DropPlayer(source, "Cheater Detected")
 end)
 
-RegisterNetEvent("ps-camera:grabHook", function(Key)
+RegisterNetEvent("ps-camera:requestWebhook", function(Key)
+    local source = source
     local event = ("ps-camera:grabbed%s"):format(Key)
     TriggerClientEvent(event, source, webhook)
 end)

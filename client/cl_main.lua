@@ -24,7 +24,7 @@ local function grabWebhook()
         newEvent = RemoveEventHandler(newEvent)
         p:resolve(hook)
     end)
-    TriggerServerEvent("ps-camera:grabHook", Key)
+    TriggerServerEvent("ps-camera:requestWebhook", Key)
     return Citizen.Await(p)
 end
 
