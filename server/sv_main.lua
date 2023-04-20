@@ -34,6 +34,7 @@ RegisterNetEvent("ps-camera:savePhoto", function(url, streetName)
         location = location
     }
     player.Functions.AddItem("photo", 1, nil, info)
+    TriggerClientEvent('inventory:client:ItemBox', source, QBCore.Shared.Items['photo'], "add")
 end)
 
 
