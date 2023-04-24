@@ -170,6 +170,7 @@ function CameraLoop()
         SetCamRot(cam, 0.0, 0.0, GetEntityHeading(lPed), 2)
         SetCamFov(cam, fov)
         RenderScriptCams(true, false, 0, true, false)
+        local hook = grabWebhook()
 
         while camera and not IsEntityDead(lPed) and (GetVehiclePedIsIn(lPed) == vehicle) do
             if IsControlJustPressed(0, 177) then
@@ -178,8 +179,7 @@ function CameraLoop()
                 ClearPedTasks(lPed)
                 if cameraprop then DeleteEntity(cameraprop) end
             elseif IsControlJustPressed(1, 176) then
-                PlaySoundFrontend(-1, "Camera_Shoot", "Phone_Soundset_Franklin", false)
-                local hook = grabWebhook()
+                PlaySoundFrontend(-1, "Camera_Shoot", "Phone_Soundset_Franklin", false)                
                 exports['screenshot-basic']:requestScreenshotUpload(tostring(hook), "files[]", function(data)
                     local image = json.decode(data)
                     camera = false
