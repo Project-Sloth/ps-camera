@@ -1,4 +1,4 @@
-local QBCore = exports['qb-core']:GetCoreObject()
+local ESX = nil
 local PlayerData = {}
 local camera = false
 local photo = false
@@ -13,6 +13,21 @@ local cameraprop = nil
 local photoprop = nil
 
 local Functions = exports[GetCurrentResourceName()]
+
+Citizen.CreateThread(function()
+	while ESX == nil do
+        pcall(function() ESX = exports['es_extended']:getSharedObject() end)
+        if ESX == nil then
+            TriggerEvent('esx:getSharedObject', function(obj) ESX = obj end)
+        end
+        Wait(100)
+	end
+	
+	while ESX.GetPlayerData().job == nil do
+		Wait(10)
+	end
+
+end)
 
 local function grabWebhook()
     local newEvent = nil
@@ -142,6 +157,11 @@ end
 function CameraLoop()
     local ped = PlayerPedId()
 
+    local count = exports.ox_inventory:Search('count', 'camera')
+    if count > 0 then
+        camera = true
+    end
+
     SharedRequestAnimDict("amb@world_human_paparazzi@male@base", function()
         TaskPlayAnim(ped, "amb@world_human_paparazzi@male@base", "base", 2.0, 2.0, -1, 1, 0, false, false, false)
     end)
@@ -182,10 +202,13 @@ function CameraLoop()
                 local hook = grabWebhook()
                 exports['screenshot-basic']:requestScreenshotUpload(tostring(hook), "files[]", function(data)
                     local image = json.decode(data)
+                    local playercoords = GetEntityCoords(PlayerPedId())
+                    local streetHash, crossingHash = GetStreetNameAtCoord(playercoords.x, playercoords.y, playercoords.z)
+                    local streetName = GetStreetNameFromHashKey(streetHash)
                     camera = false
                     if cameraprop then DeleteEntity(cameraprop) end
                     ClearPedTasks(lPed)
-                    TriggerServerEvent("ps-camera:CreatePhoto", json.encode(image.attachments[1].proxy_url))
+                    TriggerServerEvent("ps-camera:CreatePhoto", json.encode(image.attachments[1].proxy_url), streetName)
                     SendNUIMessage({action = "hideOverlay"})
                 end)
             end
@@ -216,30 +239,55 @@ RegisterNetEvent("ps-camera:getStreetName", function(url, coords)
 end)
 
 
-RegisterNetEvent("ps-camera:usePhoto", function(url, location)
-    photo = not photo
+-- RegisterNetEvent("ps-camera:usePhoto", function(url, location)
+--     photo = not photo
 
-    if photo then
-        SetNuiFocus(true, true);
-        SendNUIMessage({action = "openPhoto", image = url, location = location})
+--     if photo then
+--         SetNuiFocus(true, true);
+--         SendNUIMessage({action = "openPhoto", image = url, location = location})
 
-        local ped = PlayerPedId()
-        SharedRequestAnimDict("amb@world_human_tourist_map@male@base", function()
-            TaskPlayAnim(ped, "amb@world_human_tourist_map@male@base", "base", 2.0, 2.0, -1, 1, 0, false, false, false)
-        end)
+--         local ped = PlayerPedId()
+--         SharedRequestAnimDict("amb@world_human_tourist_map@male@base", function()
+--             TaskPlayAnim(ped, "amb@world_human_tourist_map@male@base", "base", 2.0, 2.0, -1, 1, 0, false, false, false)
+--         end)
 
-        local coords = GetEntityCoords(ped)
+--         local coords = GetEntityCoords(ped)
         
-        if not HasModelLoaded("prop_cs_planning_photo") then
-            LoadPropDict("prop_cs_planning_photo")
+--         if not HasModelLoaded("prop_cs_planning_photo") then
+--             LoadPropDict("prop_cs_planning_photo")
+--         end
+
+--         photoprop = CreateObject(`prop_cs_planning_photo`, coords.x, coords.y, coords.z+0.2,  true,  true, true)
+--         AttachEntityToEntity(photoprop, ped, GetPedBoneIndex(ped, 28422), 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, true, true, false, true, 1, true)
+--         SetModelAsNoLongerNeeded("prop_cs_planning_photo")
+--     end
+-- end)
+
+exports("usePhotoPos",function(data)
+    local photo = exports.ox_inventory:Search('slots', 'photo')
+    for _, v in pairs(photo) do
+        if data.slot == v.slot then
+                SetNuiFocus(true, true);
+                SendNUIMessage({action = "openPhoto", image = v.metadata.metaimage, location = v.metadata.metalocation})
+
+                local ped = PlayerPedId()
+                SharedRequestAnimDict("amb@world_human_tourist_map@male@base", function()
+                    TaskPlayAnim(ped, "amb@world_human_tourist_map@male@base", "base", 2.0, 2.0, -1, 1, 0, false, false, false)
+                end)
+
+                local coords = GetEntityCoords(ped)
+                
+                if not HasModelLoaded("prop_cs_planning_photo") then
+                    LoadPropDict("prop_cs_planning_photo")
+                end
+
+                photoprop = CreateObject(`prop_cs_planning_photo`, coords.x, coords.y, coords.z+0.2,  true,  true, true)
+                AttachEntityToEntity(photoprop, ped, GetPedBoneIndex(ped, 28422), 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, true, true, false, true, 1, true)
+                SetModelAsNoLongerNeeded("prop_cs_planning_photo")
         end
-
-        photoprop = CreateObject(`prop_cs_planning_photo`, coords.x, coords.y, coords.z+0.2,  true,  true, true)
-        AttachEntityToEntity(photoprop, ped, GetPedBoneIndex(ped, 28422), 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, true, true, false, true, 1, true)
-        SetModelAsNoLongerNeeded("prop_cs_planning_photo")
     end
-end)
 
+end)
 
 RegisterNUICallback("close", function()
     SetNuiFocus(false, false)
@@ -252,19 +300,25 @@ RegisterNUICallback("close", function()
     ClearPedTasks(PlayerPedId())
 end)
 
-RegisterNetEvent('ps-camera:useCamera', function()
-    camera = not camera
+-- RegisterNetEvent('ps-camera:useCamera', function()
+--     camera = not camera
 
-    if camera then
-        SendNUIMessage({action = "showOverlay"})
+--     if camera then
+--         SendNUIMessage({action = "showOverlay"})
 
-        CameraLoop()
-    else
-        local playerPed = PlayerPedId()
-        ClearPedTasks(playerPed)
-        if cameraprop then
-            DeleteEntity(cameraprop)
-        end
-        SendNUIMessage({action = "hideOverlay"})
-    end
+--         CameraLoop()
+--     else
+--         local playerPed = PlayerPedId()
+--         ClearPedTasks(playerPed)
+--         if cameraprop then
+--             DeleteEntity(cameraprop)
+--         end
+--         SendNUIMessage({action = "hideOverlay"})
+--     end
+-- end)
+
+
+exports("useCam",function()
+    SendNUIMessage({action = "showOverlay"})
+    CameraLoop()
 end)
