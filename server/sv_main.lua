@@ -64,8 +64,15 @@ end)
 QBCore.Functions.CreateUseableItem("photo", function(source, item)
     local source = source
     local Player = QBCore.Functions.GetPlayer(source)
-    if Player.Functions.GetItemByName(item.name) then
-        TriggerClientEvent("ps-camera:usePhoto", source, item.info.image, item.info.location)
+    if Config.Inv == "qb" then
+        if Player.Functions.GetItemByName(item.name) then
+            TriggerClientEvent("ps-camera:usePhoto", source, item.info.image, item.info.location)
+        end
+    elseif Config.Inv == "ox" then
+        local ox_inventory = exports.ox_inventory
+        if ox_inventory:GetItem(source, item.name, nil, true) > 0 then
+            TriggerClientEvent("ps-camera:usePhoto", source, item.metadata.image, item.metadata.location)
+        end
     end
 end)
 
