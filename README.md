@@ -9,7 +9,7 @@ The ps-camera script allows you to capture images throughout the city, serving a
 	['photo'] 				 		 = {['name'] = 'photo', 			  	  		['label'] = 'Saved Pic', 				['weight'] = 500, 		['type'] = 'item', 		['image'] = 'photo.png', 				['unique'] = true, 	['useable'] = true, 	['shouldClose'] = true,   ['combinable'] = nil,   ['description'] = 'Brand new picture saved!'},
 ```
 * Add pictures for items to your-inventory > html > images
-* Add Discord webhook to ps-camera > server > [Line 4](https://github.com/Project-Sloth/ps-camera/blob/cc0c2c35ab15840abe7533521a3ed4aac729cc60/server/sv_main.lua#L4) 
+* Add Discord webhook to ps-camera > config.lua > [Line 4](https://github.com/Project-Sloth/ps-camera/blob/cc0c2c35ab15840abe7533521a3ed4aac729cc60/config.lua#L4) 
 
 # Preview
 * Camera Overlay
