@@ -1,4 +1,9 @@
 local QBCore = exports['qb-core']:GetCoreObject()
+Config = {
+    Inv = "ox", -- qb(=lj) or ox [Inventory system]
+    webhook = "https://discord.com/api/webhooks/1098347143602913340/61nQVpgAZILNJyUNN3v6AP2yvtR8VLKcOjNVcfGYpKBfotrpqNy4uDxsQA-ERh4bqnFi", -- Add Discord webhook
+    UsePsMDT = true,
+}
 
 RegisterNetEvent("ps-camera:cheatDetect", function()
     DropPlayer(source, "Cheater Detected")
@@ -25,6 +30,7 @@ RegisterNetEvent("ps-camera:CreatePhoto", function(url)
 end)
 
 RegisterNetEvent("ps-camera:savePhoto", function(url, streetName)
+    
     local source = source
     local player = QBCore.Functions.GetPlayer(source)
     if not player then return end
@@ -32,7 +38,7 @@ RegisterNetEvent("ps-camera:savePhoto", function(url, streetName)
     local location = streetName
 
     local info = {
-        image = url,
+        ps_image = url,
         location = location
     }
     if Config.Inv == "qb" then
@@ -40,7 +46,16 @@ RegisterNetEvent("ps-camera:savePhoto", function(url, streetName)
         TriggerClientEvent('inventory:client:ItemBox', source, QBCore.Shared.Items['photo'], "add")
     elseif Config.Inv == "ox" then
         local ox_inventory = exports.ox_inventory
+        
+        if not ox_inventory:CanCarryItem(source, 'photo', 1) then
+			return TriggerClientEvent('QBCore:Notify', source, "Can not carry photo!", "error")
+		end
+
         ox_inventory:AddItem(source, "photo", 1, info)
+        
+    end
+    if Config.UsePsMDT then
+        TriggerEvent("ps-camera:ps-mdt", source, url)
     end
 end)
 
@@ -66,12 +81,12 @@ QBCore.Functions.CreateUseableItem("photo", function(source, item)
     local Player = QBCore.Functions.GetPlayer(source)
     if Config.Inv == "qb" then
         if Player.Functions.GetItemByName(item.name) then
-            TriggerClientEvent("ps-camera:usePhoto", source, item.info.image, item.info.location)
+            TriggerClientEvent("ps-camera:usePhoto", source, item.info.ps_image, item.info.location)
         end
     elseif Config.Inv == "ox" then
         local ox_inventory = exports.ox_inventory
         if ox_inventory:GetItem(source, item.name, nil, true) > 0 then
-            TriggerClientEvent("ps-camera:usePhoto", source, item.metadata.image, item.metadata.location)
+            TriggerClientEvent("ps-camera:usePhoto", source, item.metadata.ps_image, item.metadata.location)
         end
     end
 end)
