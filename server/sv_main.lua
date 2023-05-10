@@ -1,8 +1,8 @@
 local QBCore = exports['qb-core']:GetCoreObject()
 Config = {
-    Inv = "ox", -- qb(=lj) or ox [Inventory system]
-    webhook = "https://discord.com/api/webhooks/1098347143602913340/61nQVpgAZILNJyUNN3v6AP2yvtR8VLKcOjNVcfGYpKBfotrpqNy4uDxsQA-ERh4bqnFi", -- Add Discord webhook
-    UsePsMDT = true,
+    Inv = "qb", -- qb(=lj) or ox [Inventory system]
+    webhook = "", -- Add Discord webhook
+    UsePsMDT = false,
 }
 
 RegisterNetEvent("ps-camera:cheatDetect", function()
