@@ -2,7 +2,7 @@ local QBCore = exports['qb-core']:GetCoreObject()
 local PlayerData = {}
 local camera = false
 local photo = false
-local fov_max = 70.0
+local fov_max = 80.0
 local fov_min = 5.0 -- max zoom level (smaller fov is more zoom)
 local zoomspeed = 10.0 -- camera zoom speed
 local speed_lr = 8.0 -- speed by which the camera pans left-right
@@ -159,14 +159,14 @@ function CameraLoop()
     CreateThread(function()
         local lPed = PlayerPedId()
         local vehicle = GetVehiclePedIsIn(lPed)
-
+        local hook = grabWebhook()
         Wait(500)
 
         SetTimecycleModifier("default")
         SetTimecycleModifierStrength(0.3)
 
         local cam = CreateCam("DEFAULT_SCRIPTED_FLY_CAMERA", true)
-        AttachCamToEntity(cam, lPed, 0.0, 0.0, 1.0, true)
+        AttachCamToEntity(cam, lPed, 0.0, 1.0, 0.8, true)
         SetCamRot(cam, 0.0, 0.0, GetEntityHeading(lPed), 2)
         SetCamFov(cam, fov)
         RenderScriptCams(true, false, 0, true, false)
@@ -179,7 +179,6 @@ function CameraLoop()
                 if cameraprop then DeleteEntity(cameraprop) end
             elseif IsControlJustPressed(1, 176) then
                 PlaySoundFrontend(-1, "Camera_Shoot", "Phone_Soundset_Franklin", false)
-                local hook = grabWebhook()
                 exports['screenshot-basic']:requestScreenshotUpload(tostring(hook), "files[]", function(data)
                     local image = json.decode(data)
                     camera = false
