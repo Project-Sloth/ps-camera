@@ -1,9 +1,12 @@
 local QBCore = exports['qb-core']:GetCoreObject()
 Config = {
     Inv = "qb", -- qb(=lj) or ox [Inventory system]
-    webhook = "https://discord.com/api/webhooks/1069985722968317972/twLlZPh87aAFqSOvXjQJNGfoe18fqExrC9kwDd_VNh9GuJBF4CeGhwBVrUQfteEnD2XX", -- Add Discord webhook
+    webhook = "", -- Add Discord webhook
     UsePsMDT = false,
 }
+local function ConfigInvInvalid()
+    print('^1[Error] Your Config.Inv isnt set.. you probably had a typo\nYou have it set as= Config.Inv = "'.. Config.Inv .. '"')
+end
 
 RegisterNetEvent("ps-camera:cheatDetect", function()
     DropPlayer(source, "Cheater Detected")
@@ -41,7 +44,10 @@ RegisterNetEvent("ps-camera:savePhoto", function(url, streetName)
         ps_image = url,
         location = location
     }
-    if not (Config.Inv == "qb" or Config.Inv == "ox") then return print('^1[Error] Your Config.Inv isnt set.. you probably had a typo\nYou have it set as= Config.Inv = "'.. Config.Inv .. '"') end
+    if not (Config.Inv == "qb" or Config.Inv == "ox") then 
+        ConfigInvInvalid()
+        return;
+    end
     
     if Config.Inv == "qb" then
         player.Functions.AddItem("photo", 1, nil, info)
@@ -62,10 +68,13 @@ RegisterNetEvent("ps-camera:savePhoto", function(url, streetName)
 end)
 
 
-QBCore.Functions.CreateUseableItem("dslrcamera", function(source, item)
+QBCore.Functions.CreateUseableItem("camera", function(source, item)
     local source = source
     local Player = QBCore.Functions.GetPlayer(source)
-    if not (Config.Inv == "qb" or Config.Inv == "ox") then return print('^1[Error] Your Config.Inv isnt set.. you probably had a typo\nYou have it set as= Config.Inv = "'.. Config.Inv .. '"') end
+    if not (Config.Inv == "qb" or Config.Inv == "ox") then 
+        ConfigInvInvalid()
+        return;
+    end
 
     if Config.Inv == "qb" then
         if Player.Functions.GetItemByName(item.name) then
@@ -83,7 +92,10 @@ end)
 QBCore.Functions.CreateUseableItem("photo", function(source, item)
     local source = source
     local Player = QBCore.Functions.GetPlayer(source)
-    if not (Config.Inv == "qb" or Config.Inv == "ox") then return print('^1[Error] Your Config.Inv isnt set.. you probably had a typo\nYou have it set as= Config.Inv = "'.. Config.Inv .. '"') end
+    if not (Config.Inv == "qb" or Config.Inv == "ox") then 
+        ConfigInvInvalid()
+        return;
+    end
 
     if Config.Inv == "qb" then
         if Player.Functions.GetItemByName(item.name) then
@@ -100,7 +112,10 @@ end)
 function UseCam(source)
     local source = source
     local Player = QBCore.Functions.GetPlayer(source)
-    if not (Config.Inv == "qb" or Config.Inv == "ox") then return print('^1[Error] Your Config.Inv isnt set.. you probably had a typo\nYou have it set as= Config.Inv = "'.. Config.Inv .. '"') end
+    if not (Config.Inv == "qb" or Config.Inv == "ox") then 
+        ConfigInvInvalid()
+        return;
+    end
 
     if Config.Inv == "qb" then
         if Player.Functions.GetItemByName('dslrcamera') then
