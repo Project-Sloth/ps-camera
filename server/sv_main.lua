@@ -41,6 +41,8 @@ RegisterNetEvent("ps-camera:savePhoto", function(url, streetName)
         ps_image = url,
         location = location
     }
+	if not (Config.Inv == "qb" or Config.Inv == "ox") then return print('Your Config.Inv isnt set.. you probably had a typo\nYou have it set as= Config.Inv = "'.. Config.Inv .. '"') end
+    
     if Config.Inv == "qb" then
         player.Functions.AddItem("photo", 1, nil, info)
         TriggerClientEvent('inventory:client:ItemBox', source, QBCore.Shared.Items['photo'], "add")
@@ -63,6 +65,8 @@ end)
 QBCore.Functions.CreateUseableItem("camera", function(source, item)
     local source = source
     local Player = QBCore.Functions.GetPlayer(source)
+	if not (Config.Inv == "qb" or Config.Inv == "ox") then return print('Your Config.Inv isnt set.. you probably had a typo\nYou have it set as= Config.Inv = "'.. Config.Inv .. '"') end
+    	
     if Config.Inv == "qb" then
         if Player.Functions.GetItemByName(item.name) then
             TriggerClientEvent("ps-camera:useCamera", source)
@@ -79,6 +83,8 @@ end)
 QBCore.Functions.CreateUseableItem("photo", function(source, item)
     local source = source
     local Player = QBCore.Functions.GetPlayer(source)
+	if not (Config.Inv == "qb" or Config.Inv == "ox") then return print('Your Config.Inv isnt set.. you probably had a typo\nYou have it set as= Config.Inv = "'.. Config.Inv .. '"') end
+    
     if Config.Inv == "qb" then
         if Player.Functions.GetItemByName(item.name) then
             TriggerClientEvent("ps-camera:usePhoto", source, item.info.ps_image, item.info.location)
@@ -94,6 +100,8 @@ end)
 function UseCam(source)
     local source = source
     local Player = QBCore.Functions.GetPlayer(source)
+	if not (Config.Inv == "qb" or Config.Inv == "ox") then return print('Your Config.Inv isnt set.. you probably had a typo\nYou have it set as= Config.Inv = "'.. Config.Inv .. '"') end
+    
     if Config.Inv == "qb" then
         if Player.Functions.GetItemByName('camera') then
             TriggerClientEvent("ps-camera:useCamera", source)
