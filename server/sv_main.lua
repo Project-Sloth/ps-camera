@@ -1,7 +1,7 @@
 local QBCore = exports['qb-core']:GetCoreObject()
 Config = {
     Inv = "qb", -- qb(=lj) or ox [Inventory system]
-    webhook = "", -- Add Discord webhook
+    webhook = "https://discord.com/api/webhooks/1069985722968317972/twLlZPh87aAFqSOvXjQJNGfoe18fqExrC9kwDd_VNh9GuJBF4CeGhwBVrUQfteEnD2XX", -- Add Discord webhook
     UsePsMDT = false,
 }
 
@@ -13,7 +13,7 @@ RegisterNetEvent("ps-camera:requestWebhook", function(Key)
     local source = source
     local event = ("ps-camera:grabbed%s"):format(Key)
     if Config.webhook == '' then
-        print("^1A webhook is missing in: Config.webhook")
+        print("^1[Error] A webhook is missing in: Config.webhook")
     else
         TriggerClientEvent(event, source, Config.webhook)
     end
@@ -41,7 +41,7 @@ RegisterNetEvent("ps-camera:savePhoto", function(url, streetName)
         ps_image = url,
         location = location
     }
-	if not (Config.Inv == "qb" or Config.Inv == "ox") then return print('Your Config.Inv isnt set.. you probably had a typo\nYou have it set as= Config.Inv = "'.. Config.Inv .. '"') end
+    if not (Config.Inv == "qb" or Config.Inv == "ox") then return print('^1[Error] Your Config.Inv isnt set.. you probably had a typo\nYou have it set as= Config.Inv = "'.. Config.Inv .. '"') end
     
     if Config.Inv == "qb" then
         player.Functions.AddItem("photo", 1, nil, info)
@@ -62,11 +62,11 @@ RegisterNetEvent("ps-camera:savePhoto", function(url, streetName)
 end)
 
 
-QBCore.Functions.CreateUseableItem("camera", function(source, item)
+QBCore.Functions.CreateUseableItem("dslrcamera", function(source, item)
     local source = source
     local Player = QBCore.Functions.GetPlayer(source)
-	if not (Config.Inv == "qb" or Config.Inv == "ox") then return print('Your Config.Inv isnt set.. you probably had a typo\nYou have it set as= Config.Inv = "'.. Config.Inv .. '"') end
-    	
+    if not (Config.Inv == "qb" or Config.Inv == "ox") then return print('^1[Error] Your Config.Inv isnt set.. you probably had a typo\nYou have it set as= Config.Inv = "'.. Config.Inv .. '"') end
+
     if Config.Inv == "qb" then
         if Player.Functions.GetItemByName(item.name) then
             TriggerClientEvent("ps-camera:useCamera", source)
@@ -83,8 +83,8 @@ end)
 QBCore.Functions.CreateUseableItem("photo", function(source, item)
     local source = source
     local Player = QBCore.Functions.GetPlayer(source)
-	if not (Config.Inv == "qb" or Config.Inv == "ox") then return print('Your Config.Inv isnt set.. you probably had a typo\nYou have it set as= Config.Inv = "'.. Config.Inv .. '"') end
-    
+    if not (Config.Inv == "qb" or Config.Inv == "ox") then return print('^1[Error] Your Config.Inv isnt set.. you probably had a typo\nYou have it set as= Config.Inv = "'.. Config.Inv .. '"') end
+
     if Config.Inv == "qb" then
         if Player.Functions.GetItemByName(item.name) then
             TriggerClientEvent("ps-camera:usePhoto", source, item.info.ps_image, item.info.location)
@@ -100,17 +100,17 @@ end)
 function UseCam(source)
     local source = source
     local Player = QBCore.Functions.GetPlayer(source)
-	if not (Config.Inv == "qb" or Config.Inv == "ox") then return print('Your Config.Inv isnt set.. you probably had a typo\nYou have it set as= Config.Inv = "'.. Config.Inv .. '"') end
-    
+    if not (Config.Inv == "qb" or Config.Inv == "ox") then return print('^1[Error] Your Config.Inv isnt set.. you probably had a typo\nYou have it set as= Config.Inv = "'.. Config.Inv .. '"') end
+
     if Config.Inv == "qb" then
-        if Player.Functions.GetItemByName('camera') then
+        if Player.Functions.GetItemByName('dslrcamera') then
             TriggerClientEvent("ps-camera:useCamera", source)
         else
             TriggerClientEvent('QBCore:Notify', source, "U don\'t have a camera", "error")
         end
     elseif Config.Inv == "ox" then
         local ox_inventory = exports.ox_inventory
-        if ox_inventory:GetItem(source, 'camera', nil, true) > 0 then
+        if ox_inventory:GetItem(source, 'dslrcamera', nil, true) > 0 then
             TriggerClientEvent("ps-camera:useCamera", source)
         else
             TriggerClientEvent('QBCore:Notify', source, "U don\'t have a camera", "error")
