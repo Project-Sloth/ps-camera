@@ -31,7 +31,6 @@ function open(image, location) {
     }
 }
 
-
 function close() {
 	if (displayPicture) {
 		$('.picture-container').addClass('hide');
@@ -41,6 +40,15 @@ function close() {
 		$.post(`https://${GetParentResourceName()}/close`);
 	}
 }
+
+const copyToClipboard = (str) => {
+  const el = document.createElement("textarea");
+  el.value = str.replace(/[" ]/g, "");
+  document.body.appendChild(el);
+  el.select();
+  document.execCommand("copy");
+  document.body.removeChild(el);
+};
 
 $(document).ready(function () {
 	window.addEventListener("message", function (event) {  
@@ -55,6 +63,8 @@ $(document).ready(function () {
 		document.getElementById("camera-overlay").classList.add("hide");
 	  } else if (event.data.action === "openPhoto") {
 		open(event.data.image, event.data.location);
+	  } else if (event.data.action === "SavePic") {
+		copyToClipboard(event.data.pic);
 	  }
 	});
 
