@@ -76,6 +76,11 @@ QBCore.Functions.CreateUseableItem("camera", function(source, item)
         return;
     end
 
+    if not Config.webhook or Config.webhook == nil or Config.webhook == "" then 
+        print("^1[Error] A webhook is missing in: Config.webhook")
+        return;
+    end
+
     if Config.Inv == "qb" then
         if Player.Functions.GetItemByName(item.name) then
             TriggerClientEvent("ps-camera:useCamera", source)
@@ -114,6 +119,11 @@ function UseCam(source)
     local Player = QBCore.Functions.GetPlayer(source)
     if not (Config.Inv == "qb" or Config.Inv == "ox") then 
         ConfigInvInvalid()
+        return;
+    end
+
+    if not Config.webhook or Config.webhook == nil or Config.webhook == "" then 
+        print("^1[Error] A webhook is missing in: Config.webhook")
         return;
     end
 
