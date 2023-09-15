@@ -1,12 +1,15 @@
-fx_version 'adamant'
+fx_version   'cerulean'
+use_fxv2_oal 'yes'
+lua54        'yes'
+game         'gta5'
 
 game 'gta5'
 
-author 'Project Sloth Team'
+author 'Project Sloth Team - ESX version by TechJess'
 
 description 'Camera script'
 
-version '1.0.4'
+version '1.0.3'
 
 lua54 'yes'
 
