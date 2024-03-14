@@ -43,6 +43,11 @@ function close() {
 	}
 }
 
+function toggleflash(status)
+{
+	$('#flashstatus').html(status);
+}
+
 $(document).ready(function () {
 	window.addEventListener('message', function (event) {
 		if (event.data.action === 'Open') {
@@ -58,6 +63,9 @@ $(document).ready(function () {
 			open(event.data.image, event.data.location);
 		} else if (event.data.action === 'SavePic') {
 			navigator.clipboard.writeText(str);
+		}
+		else if (event.data.action === 'toggleFlash') {
+			toggleflash(event.data.status);
 		}
 	});
 

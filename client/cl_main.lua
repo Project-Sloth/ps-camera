@@ -37,7 +37,7 @@ local function HideHUDThisFrame()
     HideHudAndRadarThisFrame()
     HideHudComponentThisFrame(1)
     HideHudComponentThisFrame(2)
-    HideHudComponentThisFrame(3) 
+    HideHudComponentThisFrame(3)
     HideHudComponentThisFrame(4)
     HideHudComponentThisFrame(6)
     HideHudComponentThisFrame(7)
@@ -139,6 +139,25 @@ function SetLocation()
     end
 end
 
+local doFlash = false
+function FlashLightEffect()
+    local ped = GetPlayerPed(-1)
+    local pos = GetEntityCoords(ped)
+    local rot = GetEntityRotation(ped)
+    local lightPos = vector3(pos.x, pos.y, pos.z + 1.1)
+    local lightHandle = nil
+    CreateThread(function()
+        local endTime = GetGameTimer() + 150
+        while endTime > GetGameTimer() do
+            lightHandle = DrawLightWithRangeAndShadow(lightPos.x, lightPos.y, lightPos.z, 15, 15, 15, 50.0, 10.0, 0.5, true)
+            Wait(0)
+        end
+        if lightHandle ~= nil then
+            lightHandle = nil
+        end
+    end)
+end
+
 function CameraLoop()
     local ped = PlayerPedId()
 
@@ -172,12 +191,23 @@ function CameraLoop()
         RenderScriptCams(true, false, 0, true, false)
 
         while camera and not IsEntityDead(lPed) and (GetVehiclePedIsIn(lPed) == vehicle) do
+            if doFlash then
+                SendNUIMessage({action = "toggleFlash", status = '<b style="color:green;">ON</b>'})
+            else
+                SendNUIMessage({action = "toggleFlash", status = '<b style="color:red;">OFF</b>'})
+            end
             if IsControlJustPressed(0, 177) then
                 camera = false
                 PlaySoundFrontend(-1, "SELECT", "HUD_FRONTEND_DEFAULT_SOUNDSET", false)
                 ClearPedTasks(lPed)
                 if cameraprop then DeleteEntity(cameraprop) end
+            elseif IsControlJustPressed(0, 49) then
+                doFlash = not doFlash
             elseif IsControlJustPressed(1, 176) then
+                if doFlash then
+                    FlashLightEffect()
+                    Wait(100)
+                end
                 PlaySoundFrontend(-1, "Camera_Shoot", "Phone_Soundset_Franklin", false)
                 exports['screenshot-basic']:requestScreenshotUpload(tostring(hook), "files[]", function(data)
                     local image = json.decode(data)
@@ -188,6 +218,8 @@ function CameraLoop()
 					SendNUIMessage({action = "SavePic", pic = json.encode(image.attachments[1].proxy_url)})
                     SendNUIMessage({action = "hideOverlay"})
                 end)
+                Wait(100) -- You can adjust the timing if needed
+                ClearTimecycleModifier()
             end
 
             local zoomvalue = (1.0 / (fov_max - fov_min)) * (fov - fov_min)
@@ -196,7 +228,6 @@ function CameraLoop()
             HideHUDThisFrame()
             Wait(0)
         end
-
         camera = false
         ClearTimecycleModifier()
         fov = (fov_max + fov_min) * 0.5
@@ -229,7 +260,7 @@ RegisterNetEvent("ps-camera:usePhoto", function(url, location)
         end)
 
         local coords = GetEntityCoords(ped)
-        
+
         if not HasModelLoaded("prop_cs_planning_photo") then
             LoadPropDict("prop_cs_planning_photo")
         end
@@ -268,3 +299,4 @@ RegisterNetEvent('ps-camera:useCamera', function()
         SendNUIMessage({action = "hideOverlay"})
     end
 end)
+
