@@ -1,5 +1,5 @@
 var displayPicture = false;
-
+var tempsrc = 'dada';
 function setLocation(location) {
 	if (typeof location === 'string') {
 		document.getElementById('location').innerHTML = location;
@@ -18,6 +18,7 @@ function open(image, location) {
 			$('.picture').css({
 				'background-image': `url(${image})`,
 			});
+			tempsrc = image;
 		} else {
 			$('.picture').css({
 				'background-image': `url(https://slang.net/img/slang/lg/kekl_6395.png)`,
@@ -39,6 +40,7 @@ function close() {
 		$('#location').html('');
 		$('.picture').css({ background: '' });
 		displayPicture = false;
+		tempsrc = '';
 		$.post(`https://${GetParentResourceName()}/close`);
 	}
 }
@@ -71,7 +73,7 @@ $(document).ready(function () {
 		} else if (event.data.action === 'openPhoto') {
 			open(event.data.image, event.data.location);
 		} else if (event.data.action === 'SavePic') {
-			navigator.clipboard.writeText(str);
+			navigator.clipboard.writeText(event.data.pic);
 		}else if (event.data.action === 'toggleFlash') {
 			toggleflash(event.data.status);
 		}
@@ -87,4 +89,14 @@ $(document).ready(function () {
 				break;
 		}
 	};
+
+	$(document).ready(function() {
+		$('#copynow').on('click', function() {
+			navigator.clipboard.writeText(tempsrc);
+			$('#message').removeClass('hide').fadeIn(100);
+			setTimeout(function() {
+				$('#message').addClass('hide').fadeOut(100);
+			}, 3000);
+		});
+	});
 });

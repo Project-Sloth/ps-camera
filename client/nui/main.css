@@ -39,6 +39,18 @@ body {
 #flashstatus{
 	color: #fff;
 }
+#copynow {
+	color: rgba(0, 0, 0, 0.705);
+}
+#message{
+	padding-right: 5px;
+	color: rgba(0, 0, 0, 0.705);
+	display: none;
+}
+.copy-contaner {
+	text-align: right;
+	user-select: none;
+}
 .off::after {
 	content: " OFF";
 	color: red;

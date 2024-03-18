@@ -1,5 +1,4 @@
 local QBCore = exports['qb-core']:GetCoreObject()
-local PlayerData = {}
 
 local camera = false
 local photo = false
