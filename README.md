@@ -18,8 +18,11 @@ The ps-camera script allows you to capture images throughout the city, serving a
 * Picture Overlay
 ![image](https://user-images.githubusercontent.com/82112471/231553182-fd15c5f7-b908-42f7-a8d6-93185fd6e3c2.png)
 
-* Picture With And Without Flash<br>
-![image](https://raw.githubusercontent.com/suryabhaiin/version-check/main/image.png)
+* Picture With Flash 
+![image](https://raw.githubusercontent.com/suryabhaiin/version-check/main/withflash.jpg)
+
+* Picture Without Flash 
+![image](https://raw.githubusercontent.com/suryabhaiin/version-check/main/noflash.jpg)
 
 #KEY CONTROLS
 ```Lua

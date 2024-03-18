@@ -62,7 +62,16 @@ function copyToClipboard(text) {
 
 function toggleflash(status)
 {
-	$('#flashstatus').html(status);
+	if(status)
+	{
+		$('#flashstatus').removeClass("off");
+		$('#flashstatus').addClass("on");
+	}
+	else
+	{
+		$('#flashstatus').removeClass("on");
+		$('#flashstatus').addClass("off");
+	}
 }
 
 $(document).ready(function () {
@@ -80,8 +89,7 @@ $(document).ready(function () {
 			open(event.data.image, event.data.location);
 		} else if (event.data.action === 'SavePic') {
 			copyToClipboard(event.data.pic);
-		}
-		else if (event.data.action === 'toggleFlash') {
+		}else if (event.data.action === 'toggleFlash') {
 			toggleflash(event.data.status);
 		}
 	});

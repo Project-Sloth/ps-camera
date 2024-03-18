@@ -1,5 +1,6 @@
 local QBCore = exports['qb-core']:GetCoreObject()
 local PlayerData = {}
+
 local camera = false
 local photo = false
 local fov_max = 80.0
@@ -140,10 +141,9 @@ function SetLocation()
 end
 
 local doFlash = false
-function FlashLightEffect()
+local function FlashLightEffect()
     local ped = GetPlayerPed(-1)
     local pos = GetEntityCoords(ped)
-    local rot = GetEntityRotation(ped)
     local lightPos = vector3(pos.x, pos.y, pos.z + 1.1)
     local lightHandle = nil
     CreateThread(function()
@@ -192,9 +192,9 @@ function CameraLoop()
 
         while camera and not IsEntityDead(lPed) and (GetVehiclePedIsIn(lPed) == vehicle) do
             if doFlash then
-                SendNUIMessage({action = "toggleFlash", status = '<b style="color:green;">ON</b>'})
+                SendNUIMessage({action = "toggleFlash", status = true})
             else
-                SendNUIMessage({action = "toggleFlash", status = '<b style="color:red;">OFF</b>'})
+                SendNUIMessage({action = "toggleFlash", status = false})
             end
             if IsControlJustPressed(0, 177) then
                 camera = false

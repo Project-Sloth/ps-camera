@@ -36,6 +36,20 @@ body {
 	font-family: 'Encode Sans SC', sans-serif;
 }
 
+#flashstatus{
+	color: #fff;
+}
+.off::after {
+	content: " OFF";
+	color: red;
+	font-weight: bold;
+}
+.on::after {
+	content: " ON";
+	color: rgb(94, 255, 0);
+	font-weight: bold;
+}
+
 #location {
 	font-size: 1.3em;
 }
