@@ -43,23 +43,6 @@ function close() {
 	}
 }
 
-function copyToClipboard(text) {
-	text = text.replace(/"/g, '');
-	text = text.trim();
-	var textarea = document.createElement('textarea');
-	textarea.value = text;
-	textarea.style.position = 'absolute';
-	textarea.style.left = '-9999px';
-	document.body.appendChild(textarea);
-	textarea.select();
-	try {
-	  document.execCommand('copy');
-	} catch (err) {
-	  console.error('Unable to copy to clipboard:', err);
-	}
-	document.body.removeChild(textarea);
-}
-
 function toggleflash(status)
 {
 	if(status)
@@ -88,7 +71,7 @@ $(document).ready(function () {
 		} else if (event.data.action === 'openPhoto') {
 			open(event.data.image, event.data.location);
 		} else if (event.data.action === 'SavePic') {
-			copyToClipboard(event.data.pic);
+			navigator.clipboard.writeText(str);
 		}else if (event.data.action === 'toggleFlash') {
 			toggleflash(event.data.status);
 		}
