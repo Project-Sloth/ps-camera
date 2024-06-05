@@ -1,5 +1,5 @@
-var displayPicture = false;
-var tempsrc = 'dada';
+let displayPicture = false;
+let tempsrc = '';
 function setLocation(location) {
 	if (typeof location === 'string') {
 		document.getElementById('location').innerHTML = location;
