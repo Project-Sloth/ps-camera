@@ -62,9 +62,6 @@ RegisterNetEvent("ps-camera:savePhoto", function(url, streetName)
         ox_inventory:AddItem(source, "photo", 1, info)
         
     end
-    if Config.UsePsMDT then
-        TriggerEvent("ps-camera:ps-mdt", source, url)
-    end
 end)
 
 
