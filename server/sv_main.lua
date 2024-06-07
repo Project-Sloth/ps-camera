@@ -2,7 +2,6 @@ local QBCore = exports['qb-core']:GetCoreObject()
 Config = {
     Inv = "qb", -- qb(=lj) or ox [Inventory system]
     webhook = "", -- Add Discord webhook
-    UsePsMDT = false,
 }
 local function ConfigInvInvalid()
     print('^1[Error] Your Config.Inv isnt set.. you probably had a typo\nYou have it set as= Config.Inv = "'.. Config.Inv .. '"')
