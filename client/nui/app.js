@@ -1,5 +1,11 @@
 let displayPicture = false;
 let tempsrc = '';
+
+function sanitizeUrl(inputUrl) {
+    let purifiedUrl = DOMPurify.sanitize(inputUrl, { ALLOWED_URI_REGEXP: /^https?:\/\//i });
+    return purifiedUrl || 'about:blank';
+}
+
 function setLocation(location) {
 	if (typeof location === 'string') {
 		document.getElementById('location').innerHTML = location;
@@ -15,6 +21,7 @@ function open(image, location) {
 	if (!displayPicture) {
 		$('.picture-container').removeClass('hide');
 		if (image) {
+			image = sanitizeUrl(image);
 			$('.picture').css({
 				'background-image': `url(${image})`,
 			});
@@ -73,7 +80,7 @@ $(document).ready(function () {
 		} else if (event.data.action === 'openPhoto') {
 			open(event.data.image, event.data.location);
 		} else if (event.data.action === 'SavePic') {
-			navigator.clipboard.writeText(event.data.pic);
+			navigator.clipboard.writeText(sanitizeUrl(event.data.pic));
 		}else if (event.data.action === 'toggleFlash') {
 			toggleflash(event.data.status);
 		}
@@ -92,7 +99,7 @@ $(document).ready(function () {
 
 	$(document).ready(function() {
 		$('#copynow').on('click', function() {
-			navigator.clipboard.writeText(tempsrc);
+			navigator.clipboard.writeText(sanitizeUrl(tempsrc));
 			$('#message').removeClass('hide').fadeIn(100);
 			setTimeout(function() {
 				$('#message').addClass('hide').fadeOut(100);
