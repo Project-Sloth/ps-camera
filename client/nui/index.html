@@ -54,13 +54,15 @@
 	<body>
 		<div class="container">
 			<div class="picture-container hide">
-			  <div class="picture"></div>
-			  <div class="info">
+				<p class="copy-contaner"><span id="message" class="hide">URL coppied to clipboard!</span><i id="copynow" class="fa-solid fa-copy"></i></p>
+				<div class="picture"></div>
+				<div class="info">
 				<p>Location</p>
 				<p id="location">Unknown</p>
-			  </div>
+
+				</div>
 			</div>
-		  </div>
+		</div>
 
 		<!-- Overlay for when taking an image with the camera -->
 		<div class="camera-overlay hide" id="camera-overlay">
@@ -76,7 +78,7 @@
 				<div class="status-bar">
 					<div class="battery-life">
 						<i class="fa-solid fa-battery-three-quarters icon"></i>
-						<span>69%</span>
+						<span>69%</span><b id="flashstatus" class="off"><i class="fa-solid fa-bolt"></i></b>
 					</div>
 					<div class="recording-info">
 						<span>00:04:20:69</span>

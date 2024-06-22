@@ -3,7 +3,9 @@
 body {
 	background-color: transparent !important;
 }
-
+#flashstatus {
+    margin-left: 10px;
+}
 .container {
 	display: flex;
 	justify-content: center;
@@ -34,6 +36,32 @@ body {
 	text-align: center;
 	user-select: none;
 	font-family: 'Encode Sans SC', sans-serif;
+}
+
+#flashstatus{
+	color: #fff;
+}
+#copynow {
+	color: rgba(0, 0, 0, 0.705);
+}
+#message{
+	padding-right: 5px;
+	color: rgba(0, 0, 0, 0.705);
+	display: none;
+}
+.copy-contaner {
+	text-align: right;
+	user-select: none;
+}
+.off::after {
+	content: " OFF";
+	color: red;
+	font-weight: bold;
+}
+.on::after {
+	content: " ON";
+	color: rgb(94, 255, 0);
+	font-weight: bold;
 }
 
 #location {

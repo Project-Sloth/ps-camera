@@ -1,4 +1,10 @@
-var displayPicture = false;
+let displayPicture = false;
+let tempsrc = '';
+
+function sanitizeUrl(inputUrl) {
+    let purifiedUrl = DOMPurify.sanitize(inputUrl, { ALLOWED_URI_REGEXP: /^https?:\/\//i });
+    return purifiedUrl || 'about:blank';
+}
 
 function setLocation(location) {
 	if (typeof location === 'string') {
@@ -15,9 +21,11 @@ function open(image, location) {
 	if (!displayPicture) {
 		$('.picture-container').removeClass('hide');
 		if (image) {
+			image = sanitizeUrl(image);
 			$('.picture').css({
 				'background-image': `url(${image})`,
 			});
+			tempsrc = image;
 		} else {
 			$('.picture').css({
 				'background-image': `url(https://slang.net/img/slang/lg/kekl_6395.png)`,
@@ -39,7 +47,22 @@ function close() {
 		$('#location').html('');
 		$('.picture').css({ background: '' });
 		displayPicture = false;
+		tempsrc = '';
 		$.post(`https://${GetParentResourceName()}/close`);
+	}
+}
+
+function toggleflash(status)
+{
+	if(status)
+	{
+		$('#flashstatus').removeClass("off");
+		$('#flashstatus').addClass("on");
+	}
+	else
+	{
+		$('#flashstatus').removeClass("on");
+		$('#flashstatus').addClass("off");
 	}
 }
 
@@ -57,7 +80,9 @@ $(document).ready(function () {
 		} else if (event.data.action === 'openPhoto') {
 			open(event.data.image, event.data.location);
 		} else if (event.data.action === 'SavePic') {
-			navigator.clipboard.writeText(str);
+			navigator.clipboard.writeText(sanitizeUrl(event.data.pic));
+		}else if (event.data.action === 'toggleFlash') {
+			toggleflash(event.data.status);
 		}
 	});
 
@@ -71,4 +96,14 @@ $(document).ready(function () {
 				break;
 		}
 	};
+
+	$(document).ready(function() {
+		$('#copynow').on('click', function() {
+			navigator.clipboard.writeText(sanitizeUrl(tempsrc));
+			$('#message').removeClass('hide').fadeIn(100);
+			setTimeout(function() {
+				$('#message').addClass('hide').fadeOut(100);
+			}, 3000);
+		});
+	});
 });
