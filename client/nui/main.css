@@ -4,7 +4,7 @@ body {
 	background-color: transparent !important;
 }
 #flashstatus {
-    padding-left: 10px;
+    margin-left: 10px;
 }
 .container {
 	display: flex;
