@@ -8,6 +8,27 @@ The ps-camera script allows you to capture images throughout the city, serving a
 	['camera'] 						 = {['name'] = 'camera', 			  	  		['label'] = 'Camera', 					['weight'] = 1000, 		['type'] = 'item', 		['image'] = 'camera.png', 				['unique'] = true, 	['useable'] = true, 	['shouldClose'] = true,   ['combinable'] = nil,   ['description'] = 'Camera to take pretty pictures.'},
 	['photo'] 				 		 = {['name'] = 'photo', 			  	  		['label'] = 'Saved Pic', 				['weight'] = 500, 		['type'] = 'item', 		['image'] = 'photo.png', 				['unique'] = true, 	['useable'] = true, 	['shouldClose'] = true,   ['combinable'] = nil,   ['description'] = 'Brand new picture saved!'},
 ```
+OR
+* Add items to ox-inventory > data > items.lua
+```
+['camera']             = {
+		label = 'Instant Camera',
+		description = 'Camera to take pretty pictures.',
+		weight = 1000,
+		stack = false,
+		close = true,
+		consume = 0.0,
+	},
+
+['photo']             = {
+		label = 'Photo',
+		description = 'Brand new picture saved!',
+		weight = 500,
+		stack = false,
+		close = true,
+		consume = 0.0,
+	},
+```
 * Add pictures for items to your-inventory > html > images
 * Add Discord webhook to ps-camera > server > [Line 4](https://github.com/Project-Sloth/ps-camera/blob/cc0c2c35ab15840abe7533521a3ed4aac729cc60/server/sv_main.lua#L4)
 
