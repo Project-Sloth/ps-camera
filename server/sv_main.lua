@@ -2,6 +2,8 @@ local QBCore = exports['qb-core']:GetCoreObject()
 Config = {
     Inv = "qb", -- qb(=lj) or ox [Inventory system]
     webhook = "", -- Add Discord webhook
+    cameraItem = "camera", -- Camera Item
+    photoItem = "photo" -- Photo Item
 }
 local function ConfigInvInvalid()
     print('^1[Error] Your Config.Inv isnt set.. you probably had a typo\nYou have it set as= Config.Inv = "'.. Config.Inv .. '"')
@@ -49,22 +51,22 @@ RegisterNetEvent("ps-camera:savePhoto", function(url, streetName)
     end
     
     if Config.Inv == "qb" then
-        player.Functions.AddItem("photo", 1, nil, info)
-        TriggerClientEvent('inventory:client:ItemBox', source, QBCore.Shared.Items['photo'], "add")
+        player.Functions.AddItem(Config.photoItem, 1, nil, info)
+        TriggerClientEvent('inventory:client:ItemBox', source, QBCore.Shared.Items[Config.photoItem], "add")
     elseif Config.Inv == "ox" then
         local ox_inventory = exports.ox_inventory
         
-        if not ox_inventory:CanCarryItem(source, 'photo', 1) then
+        if not ox_inventory:CanCarryItem(source, Config.photoItem, 1) then
 			return TriggerClientEvent('QBCore:Notify', source, "Can not carry photo!", "error")
 		end
 
-        ox_inventory:AddItem(source, "photo", 1, info)
+        ox_inventory:AddItem(source, Config.photoItem, 1, info)
         
     end
 end)
 
 
-QBCore.Functions.CreateUseableItem("camera", function(source, item)
+QBCore.Functions.CreateUseableItem(Config.cameraItem, function(source, item)
     local source = source
     local Player = QBCore.Functions.GetPlayer(source)
     if not (Config.Inv == "qb" or Config.Inv == "ox") then 
@@ -90,7 +92,7 @@ QBCore.Functions.CreateUseableItem("camera", function(source, item)
     
 end)
 
-QBCore.Functions.CreateUseableItem("photo", function(source, item)
+QBCore.Functions.CreateUseableItem(Config.photoItem, function(source, item)
     local source = source
     local Player = QBCore.Functions.GetPlayer(source)
     if not (Config.Inv == "qb" or Config.Inv == "ox") then 
