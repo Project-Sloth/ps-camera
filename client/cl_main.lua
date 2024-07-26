@@ -14,7 +14,7 @@ local photoprop = nil
 
 local Functions = exports[GetCurrentResourceName()]
 
-local function grabWebhook()
+local function grabUploadDetails()
     local newEvent = nil
     local p = promise.new()
     local Key = Functions.Key()
@@ -24,7 +24,12 @@ local function grabWebhook()
         newEvent = RemoveEventHandler(newEvent)
         p:resolve(hook)
     end)
-    TriggerServerEvent("ps-camera:requestWebhook", Key)
+    
+    if Config.UseFivemerr == false then
+        TriggerServerEvent("ps-camera:requestWebhook", Key)
+    else
+        TriggerServerEvent("ps-camera:requestFivemerrToken", Key)
+    end
     return Citizen.Await(p)
 end
 
@@ -177,7 +182,7 @@ function CameraLoop()
     CreateThread(function()
         local lPed = PlayerPedId()
         local vehicle = GetVehiclePedIsIn(lPed)
-        local hook = grabWebhook()
+        local uploadHookOrSecret = grabUploadDetails()
         Wait(500)
 
         SetTimecycleModifier("default")
@@ -208,15 +213,34 @@ function CameraLoop()
                     Wait(100)
                 end
                 PlaySoundFrontend(-1, "Camera_Shoot", "Phone_Soundset_Franklin", false)
-                exports['screenshot-basic']:requestScreenshotUpload(tostring(hook), "files[]", function(data)
-                    local image = json.decode(data)
-                    camera = false
-                    if cameraprop then DeleteEntity(cameraprop) end
-                    ClearPedTasks(lPed)
-                    TriggerServerEvent("ps-camera:CreatePhoto", json.encode(image.attachments[1].proxy_url))
-					SendNUIMessage({action = "SavePic", pic = json.encode(image.attachments[1].proxy_url)})
-                    SendNUIMessage({action = "hideOverlay"})
-                end)
+
+                if Config.UseFivemerr == false then
+                    exports['screenshot-basic']:requestScreenshotUpload(tostring(uploadHookOrSecret), "files[]", function(data)
+                        local image = json.decode(data)
+                        camera = false
+                        if cameraprop then DeleteEntity(cameraprop) end
+                        ClearPedTasks(lPed)
+                        TriggerServerEvent("ps-camera:CreatePhoto", json.encode(image.attachments[1].proxy_url))
+                        SendNUIMessage({action = "SavePic", pic = json.encode(image.attachments[1].proxy_url)})
+                        SendNUIMessage({action = "hideOverlay"})
+                    end)
+                else
+                    exports['screenshot-basic']:requestScreenshotUpload("https://api.fivemerr.com/v1/media/images", "file", {
+                        headers = {
+                            Authorization = tostring(uploadHookOrSecret)
+                        },
+                        encoding = 'png'
+                    }, function(data)
+                        local image = json.decode(data)
+                        camera = false
+                        if cameraprop then DeleteEntity(cameraprop) end
+                        ClearPedTasks(lPed)
+                        local link = (image and image.url) or 'invalid_url'
+                        TriggerServerEvent("ps-camera:CreatePhoto", json.encode(link))
+                        SendNUIMessage({action = "SavePic", pic = json.encode(link)})
+                        SendNUIMessage({action = "hideOverlay"})
+                    end)
+                end
                 Wait(100) -- You can adjust the timing if needed
                 ClearTimecycleModifier()
             end
@@ -298,4 +322,3 @@ RegisterNetEvent('ps-camera:useCamera', function()
         SendNUIMessage({action = "hideOverlay"})
     end
 end)
-
